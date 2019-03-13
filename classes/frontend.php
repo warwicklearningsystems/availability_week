@@ -26,8 +26,6 @@ namespace availability_week;
 
 defined('MOODLE_INTERNAL') || die();
 
-use core_utils;
-
 /**
  * Front-end class.
  *
@@ -50,7 +48,7 @@ class frontend extends \core_availability\frontend {
     const DATE_SELECTOR_SUPPORTED = false;
 
     protected function get_javascript_strings() {
-        return array('ajaxerror', 'diruse core_utils;ection_before', 'direction_from', 'direction_until',
+        return array('ajaxerror', 'direction_before', 'direction_from', 'direction_until',
                 'direction_label');
     }
     
@@ -65,7 +63,7 @@ class frontend extends \core_availability\frontend {
         if(!$cm->availability)
             return false;
 
-        $storedAvailabilityConditionMap = core_utils::arrayToObject(core_utils::JsonToArray($cm->availability))->c;
+        $storedAvailabilityConditionMap = utils::arrayToObject(utils::JsonToArray($cm->availability))->c;
 
         foreach( $storedAvailabilityConditionMap as $key => $storedAvailabilityConditionObject){
             if('week' == $storedAvailabilityConditionObject->type && $storedAvailabilityConditionObject->t == $date){
@@ -82,8 +80,8 @@ class frontend extends \core_availability\frontend {
         global $CFG, $OUTPUT;
         require_once($CFG->libdir . '/formslib.php');
 
-        $availabilityWeekConditionConfigObjectMap = core_utils::arrayToObject(
-            core_utils::JsonToArray($CFG->availability_condition_week)
+        $availabilityWeekConditionConfigObjectMap = utils::arrayToObject(
+            utils::JsonToArray($CFG->availability_condition_week)
         );
 
         $visibleAvailabilityWeekConditionConfigObjectMap = new \stdClass();

@@ -7,6 +7,8 @@
  */
 require_once($CFG->libdir.'/adminlib.php');     
 
+use availability_week\utils;
+
 defined('MOODLE_INTERNAL') || die();
 
 class availability_condition_week_textarea extends admin_setting_configtextarea{
@@ -28,7 +30,7 @@ class availability_condition_week_textarea extends admin_setting_configtextarea{
         if( parent::validate( $data ) ){
         
             try{
-                $jsonMap = core_utils::JsonToArray( $data );
+                $jsonMap = utils::JsonToArray( $data );
 
                 foreach( $jsonMap as $key => $jsonConfig ){
                     if( !is_array( $jsonConfig ) )
@@ -44,6 +46,8 @@ class availability_condition_week_textarea extends admin_setting_configtextarea{
             }catch( Exception $e ){
                 return get_string('textarea_invalid_input', 'availability_week');
             }
+            
         }
+        return false;
     }
 }

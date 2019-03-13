@@ -24,11 +24,9 @@
 
 namespace availability_week;
 
-use core_utils;
-
 defined('MOODLE_INTERNAL') || die();
 
-/**use core_utils;
+/**
  * Date condition.
  *
  * @package availability_week
@@ -218,8 +216,8 @@ class condition extends \core_availability\condition {
     
     protected function show_week($dateOnly){
         global $CFG;
-        $availabilityWeekConditionConfigObjectMap = core_utils::arrayToObject(
-            core_utils::JsonToArray($CFG->availability_condition_week)
+        $availabilityWeekConditionConfigObjectMap = utils::arrayToObject(
+            utils::JsonToArray($CFG->availability_condition_week)
         );
         
         foreach($availabilityWeekConditionConfigObjectMap as $key => $availabilityWeekConditionConfigObject){
