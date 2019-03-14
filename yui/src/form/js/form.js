@@ -31,7 +31,7 @@ M.availability_week.form.getNode = function(json) {
                     M.util.get_string('direction_before', 'availability_week') + '</span> <span class="availability-group">' +
             '<label><span class="accesshide">' + M.util.get_string('direction_label', 'availability_week') + ' </span>' +
             '<select name="direction" class="custom-select">' +
-            '<option value="&gt;=">' + M.util.get_string('direction_before', 'availability_week') + '</option>' +
+            '<option value="&gt;=">' + M.util.get_string('direction_from', 'availability_week') + '</option>' +
             '<option value="&lt;">' + M.util.get_string('direction_until', 'availability_week') + '</option>' +
             '</select></label></span> ' + this.html;
     var node = Y.Node.create('<span>' + html + '</span>');
