@@ -25,17 +25,34 @@
 $string['setting_form_description'] = '<p>Allows resource availability to be restricted by the academic week number, offset from the start date of the academic year.</p>';
 $string['textarea_invalid_input']= 'JSON input required';
 $string['textarea_invalid_json_format']= 'Invalid JSON format provided';
-$string['textarea_description'] = 'JSON input required, i.e. [
-{
+$string['textarea_invalid_property']= 'Invalid property (object) {$a->object}::{$a->property}';
+$string['textarea_invalid_date']= 'Invalid date "{$a->date}" found at (object) {$a->object}';
+$string['textarea_description'] = <<<__TEXT__
+<pre>
+JSON input required, i.e. 
+[
+    {
+        "label" : "Term 1, Week 1",
+        "academic_year" : "18/19",
         "date" : "2018-10-01",
-        "label" : "Week 1",
         "show" : 1
-},
-{
+    },
+    {
+        "label" : "Term 1, Week 2",
+        "academic_year" : "18/19",
         "date" : "2018-10-08",
-        "label" : "Week 2",
         "show" : 1
-}]';
+    },
+    {
+        "label" : "Term 1, Week 1",
+        "academic_year" : "19/20",
+        "date" : "2019-10-02",
+        "show" : 1
+    }
+]
+</pre>
+__TEXT__
+;
 $string['config_label'] = 'Config';
 $string['ajaxerror'] = 'Error contacting server to convert times';
 $string['direction_before'] = 'Week';

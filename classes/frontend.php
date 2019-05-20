@@ -24,6 +24,8 @@
 
 namespace availability_week;
 
+use availability_week\config;
+
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -58,7 +60,7 @@ class frontend extends \core_availability\frontend {
      * @param int $date
      * @return bool
      */
-    private function findStoredAvailabilityWeekConditionByDate(\cm_info $cm = null, $date){
+    private function findStoredAvailabilityWeekConditionByLabel(\cm_info $cm = null, $label){
         
         if(!$cm->availability)
             return false;
@@ -66,23 +68,21 @@ class frontend extends \core_availability\frontend {
         $storedAvailabilityConditionMap = utils::arrayToObject(utils::JsonToArray($cm->availability))->c;
 
         foreach( $storedAvailabilityConditionMap as $key => $storedAvailabilityConditionObject){
-            if('week' == $storedAvailabilityConditionObject->type && $storedAvailabilityConditionObject->t == $date){
+            if('week' == $storedAvailabilityConditionObject->type && $storedAvailabilityConditionObject->label == $label){
                 return true;
             }   
         }
 
         return false;
     }
-    
 
     protected function get_javascript_init_params($course, \cm_info $cm = null,
             \section_info $section = null) {
         global $CFG, $OUTPUT;
         require_once($CFG->libdir . '/formslib.php');
 
-        $availabilityWeekConditionConfigObjectMap = utils::arrayToObject(
-            utils::JsonToArray($CFG->availability_condition_week)
-        );
+        $availabilityConditionWeekConfig = new config( $course );
+        $availabilityWeekConditionConfigObjectMap = $availabilityConditionWeekConfig->getOptions();
 
         $visibleAvailabilityWeekConditionConfigObjectMap = new \stdClass();
 
@@ -91,10 +91,9 @@ class frontend extends \core_availability\frontend {
             $html .= \html_writer::start_tag('select', array('name' => 'week-select', 'class' => 'custom-select'));
             
                 foreach( $availabilityWeekConditionConfigObjectMap as $key => $availabilityWeekConditionConfigObject){
+                    $attributes = ['value' => $availabilityWeekConditionConfigObject->label];
                     
-                    $attributes = ['value' => strtotime($availabilityWeekConditionConfigObject->date)];
-                    
-                    if( $availabilityWeekConditionConfigObject->show || $this->findStoredAvailabilityWeekConditionByDate($cm, strtotime($availabilityWeekConditionConfigObject->date) ) ){
+                    if( $availabilityWeekConditionConfigObject->show || $this->findStoredAvailabilityWeekConditionByLabel($cm, $availabilityWeekConditionConfigObject->label ) ){
                         $visibleAvailabilityWeekConditionConfigObjectMap->$key = $availabilityWeekConditionConfigObject;
                         $html .= \html_writer::tag('option', $availabilityWeekConditionConfigObject->label, $attributes);
                     }
@@ -107,8 +106,9 @@ class frontend extends \core_availability\frontend {
         $html = rtrim($html) . '</span>';
 
         return array( 
-            $html, 
-            strtotime( current( $visibleAvailabilityWeekConditionConfigObjectMap )->date ) //set default date to that of the first config option, as that'll appear in drop-down list first
+            $html,
+            current( $visibleAvailabilityWeekConditionConfigObjectMap )->label ? : null, //set default label to that of the first config option, as that'll appear in drop-down list first
+            $course->id
         ); 
     }
 }

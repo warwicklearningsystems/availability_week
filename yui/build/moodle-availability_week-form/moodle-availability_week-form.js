@@ -21,11 +21,13 @@ M.availability_week.form = Y.Object(M.core_availability.plugin);
  *
  * @method initInner
  * @param {String} html HTML to use for date fields
- * @param {Number} defaultTime Time value that corresponds to initial fields
+ * @param {String} defaultLabel The default label to use if none selected
+ * @param {Number} courseId The course id
  */
-M.availability_week.form.initInner = function(html, defaultTime) {
+M.availability_week.form.initInner = function(html, defaultLabel, courseId) {
     this.html = html;
-    this.defaultTime = defaultTime;
+    this.defaultLabel = defaultLabel;
+    this.courseId = courseId;
 };
 
 M.availability_week.form.getNode = function(json) {
@@ -39,24 +41,26 @@ M.availability_week.form.getNode = function(json) {
     var node = Y.Node.create('<span>' + html + '</span>');
 
     // Set initial value if non-default.
-    if (json.t !== undefined) {
-        node.setData('time', json.t);
+    if (json.label !== undefined) {
+        node.setData('label', json.label);
         // Disable everything.
         node.all('select:not([name=direction])').each(function(select) {
             select.set('disabled', true);
         });
 
         var select = node.one('select[name=week-select');
-        select.set('value', '' + json.t);
+        select.set('value', '' + json.label);
         select.set('disabled', false);
 
     } else {
-        // Set default time.
-        node.setData('time', this.defaultTime);
+        // Set default label.
+        node.setData('label', this.defaultLabel);
     }
     if (json.d !== undefined) {
         node.one('select[name=direction]').set('value', json.d);
     }
+    
+    node.setData('courseid', this.courseId);
 
     // Add event handlers (first time only).
     if (!M.availability_week.form.addedEvents) {
@@ -69,12 +73,11 @@ M.availability_week.form.getNode = function(json) {
         }, '.availability_week select[name=direction]');
 
         root.delegate('change', function() {
-            // Set time with value of this option.
-            this.ancestor('span.availability_week').setData('time', this.get("value"));
+            // Set label with value of this option.
+            this.ancestor('span.availability_week').setData('label', this.get('options').item(this.get('selectedIndex')).get('value'));
             M.core_availability.form.update();
         }, '.availability_week select:not([name=direction])');
     }
-
 
     return node;
 };
@@ -82,7 +85,8 @@ M.availability_week.form.getNode = function(json) {
 
 M.availability_week.form.fillValue = function(value, node) {
     value.d = node.one('select[name=direction]').get('value');
-    value.t = parseInt(node.getData('time'), 10);
+    value.label = node.getData('label');
+    value.courseid = node.getData('courseid');
 };
 
 
