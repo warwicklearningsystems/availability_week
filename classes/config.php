@@ -86,6 +86,12 @@ class config{
             }
         });
 
+        if( $this->isCourseWithinAnAcademicYear() && !$filteredConfigMap ){ //no options found in config for 'academic year' course, fallback to defaults
+            $filteredConfigMap = array_filter( $configMap, function( $map ){
+                return stristr( 'none', $map[ 'academic_year' ] );
+            });
+        }
+
         return utils::arrayToObject( $filteredConfigMap );
     }
 
