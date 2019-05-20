@@ -47,8 +47,6 @@ class condition extends \core_availability\condition {
     /** @var string Label used to retrieve the appropriate date from the config. */
     private $label;
 
-    /** @var int The course that the condition */
-    private $courseId;
     /** @var int Forced current time (for unit tests) or 0 for normal. */
     private static $forcecurrenttime = 0;
 
@@ -59,8 +57,6 @@ class condition extends \core_availability\condition {
      * @throws \coding_exception If invalid data structure.
      */
     public function __construct($structure) {
-        global $CFG;
-
         // Get direction.
         if (isset($structure->d) && in_array($structure->d,
                 array(self::DIRECTION_FROM, self::DIRECTION_UNTIL))) {
@@ -75,8 +71,6 @@ class condition extends \core_availability\condition {
         } else {
             throw new \coding_exception('Missing or invalid ->label for week condition');
         }
-
-        $this->courseId = $structure->courseid;
     }
 
     public function save() {
@@ -103,7 +97,9 @@ class condition extends \core_availability\condition {
     }
 
     public function is_available_for_all($not = false) {
-        $config = new config( get_course( $this->courseId ) );
+        global $COURSE;
+
+        $config = new config( get_course( $COURSE->id ) );
         $time = $config->getDateByLabelForAcademicYear( $this->label );
 
         // Check condition.

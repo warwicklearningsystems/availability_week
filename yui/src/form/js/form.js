@@ -20,12 +20,10 @@ M.availability_week.form = Y.Object(M.core_availability.plugin);
  * @method initInner
  * @param {String} html HTML to use for date fields
  * @param {String} defaultLabel The default label to use if none selected
- * @param {Number} courseId The course id
  */
-M.availability_week.form.initInner = function(html, defaultLabel, courseId) {
+M.availability_week.form.initInner = function(html, defaultLabel) {
     this.html = html;
     this.defaultLabel = defaultLabel;
-    this.courseId = courseId;
 };
 
 M.availability_week.form.getNode = function(json) {
@@ -57,8 +55,6 @@ M.availability_week.form.getNode = function(json) {
     if (json.d !== undefined) {
         node.one('select[name=direction]').set('value', json.d);
     }
-    
-    node.setData('courseid', this.courseId);
 
     // Add event handlers (first time only).
     if (!M.availability_week.form.addedEvents) {
@@ -84,5 +80,4 @@ M.availability_week.form.getNode = function(json) {
 M.availability_week.form.fillValue = function(value, node) {
     value.d = node.one('select[name=direction]').get('value');
     value.label = node.getData('label');
-    value.courseid = node.getData('courseid');
 };

@@ -107,8 +107,7 @@ class frontend extends \core_availability\frontend {
 
         return array( 
             $html,
-            current( $visibleAvailabilityWeekConditionConfigObjectMap )->label ? : null, //set default label to that of the first config option, as that'll appear in drop-down list first
-            $course->id
+            current( $visibleAvailabilityWeekConditionConfigObjectMap )->label ? : null //set default label to that of the first config option, as that'll appear in drop-down list first
         ); 
     }
 }
