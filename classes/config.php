@@ -49,12 +49,19 @@ class config{
 
             foreach( $jsonConfig as $jsonProperty => $jsonValue ){
                 if( 'date' == $jsonProperty ){
-                    if( !preg_match("/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/",$jsonValue) ){
-                        $errorMap[] = [ 'error' => get_string('textarea_invalid_date', 'availability_week', [ 'object' => $key, 'date' => $jsonValue ] ) ];
+                    if( !preg_match("/^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/", trim( $jsonValue ) ) ){
+                        $errorMap[] = [ 'error' => get_string('textarea_invalid_property', 'availability_week', [ 'object' => $key, 'property' => 'date', 'value' => $jsonValue ] ) ];
                     }
                 }
+
+                if( 'academic_year' == $jsonProperty ){
+                    if( !( 'none' == trim( $jsonValue ) ) && !preg_match("/^\d{2}\/\d{2}$/", trim( $jsonValue ) ) ){
+                        $errorMap[] = [ 'error' => get_string('textarea_invalid_property', 'availability_week', [ 'object' => $key, 'property' => 'academic_year', 'value' => $jsonValue ] ) ];
+                    }
+                }
+
                 if( !in_array( $jsonProperty, self::EXPECTED_JSON_PROPERTIES ) ){
-                    $errorMap[] = [ 'error' => get_string('textarea_invalid_property', 'availability_week', [ 'object' => $key, 'property' => $jsonProperty ] ) ];
+                    $errorMap[] = [ 'error' => get_string('textarea_unexpected_property', 'availability_week', [ 'object' => $key, 'property' => $jsonProperty ] ) ];
                 }
             }
         }
@@ -63,7 +70,7 @@ class config{
     }
     
     private function isCourseWithinAnAcademicYear(){
-        $pattern = "/\d\d\/\d\d\)$/";
+        $pattern = "/\d{2}\/\d{2}\)$/";
         if( preg_match( $pattern, trim( $this->course->fullname ) ) || preg_match( $pattern, trim ( $this->course->shortname ) ) ){
             return true;
         }
@@ -109,5 +116,7 @@ class config{
                 return strtotime( $map->date );
             }
         }
+
+        return false;
     }
 }

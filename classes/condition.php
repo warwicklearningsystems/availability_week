@@ -102,6 +102,9 @@ class condition extends \core_availability\condition {
         $config = new config( get_course( $COURSE->id ) );
         $time = $config->getDateByLabelForAcademicYear( $this->label );
 
+        if( !$time ) //it's likey that the label no longer exists in the config for this academic year (which should be avoided), so prevent access by default
+            return true;
+
         // Check condition.
         $now = self::get_time();
 
