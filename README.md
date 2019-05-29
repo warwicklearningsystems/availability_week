@@ -23,7 +23,7 @@ Currenly all of the configuration will be done in the _textarea_. The requiremen
 ```
 #### Defaults
 
-In cases where a course does not fall within an academic year, i.e. it's {name} (fullname/shortname) is not in the format, {name} (yy/yy), or there is no config for an academic year course; which given the example config above, they'd be no conifg found for CES Potsgraduate Study Skills (17/18), the default restriction options will instead be presented. Default options can be set in the config by setting `"academic_year"::"none"` as shown in the first two lines of the config above.
+In cases where a course does not fall within an academic year, i.e. it's {name} (fullname/shortname) is not in the format, {name} (yy/yy), or there is no config for an academic year course; which given the example config above, they'd be no conifg found for CES Potsgraduate Study Skills (17/18), the default restriction options will instead be presented. Default options can be set in the config by setting `"academic_year":"none"` as shown in the first two lines of the config above.
 
 ### Restriction by week JSON Object properties
 _Note: although the validity of the complete JSON input is checked, and each object is checked to ensure that it contains the properties described below, only the value of the `date` property is currently validated._
@@ -32,7 +32,7 @@ _Note: although the validity of the complete JSON input is checked, and each obj
 Defines the label for the `date`, used when the 'availability criteria' is displayed. For the purposes of this plugin the expectation is that the label will be **Week 1**, **Week 2** etc, but this is not mandatory and the user has the flexibility to give any label of their choosing.
 
 #### academic_year
-The value is expected to be specified in **yy/yy format**. This is an important property as it used to determine the restriction options. The value is used in the pattern match against the course->fullname or course->shortname properties, a successful match results in the option being made available.
+The value is expected to be specified in **yy/yy format**. This is an important property as it used to determine the restriction options. The value is used in the pattern match against the $course::fullname or $course::shortname properties, a successful match results in the option being made available.
 
 #### date
 The actual date, specified in **Y-m-d format**, that will be used in the condition to determine the availability of the activity/resource. This is the most important property which the other properties supplement.
