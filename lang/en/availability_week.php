@@ -25,8 +25,8 @@
 $string['setting_form_description'] = '<p>Allows resource availability to be restricted by the academic week number, offset from the start date of the academic year.</p>';
 $string['textarea_invalid_input']= 'JSON input required';
 $string['textarea_invalid_json_format']= 'Invalid JSON format provided';
-$string['textarea_invalid_property']= 'Invalid property (object) {$a->object}::{$a->property}';
-$string['textarea_invalid_date']= 'Invalid date "{$a->date}" found at (object) {$a->object}';
+$string['textarea_unexpected_property']= 'Unexpected property (object) {$a->object}::{$a->property}';
+$string['textarea_invalid_property']= 'Invalid {$a->property} "{$a->value}" found at (object) {$a->object}';
 $string['textarea_description'] = <<<__TEXT__
 <pre>
 JSON input required, i.e. 
