@@ -38,12 +38,17 @@ if ($ADMIN->fulltree) {
         )
     );
 
+    $possibleAcademicYear =  date( 'y' ).'/'.date( 'y', strtotime( '+1 year' ) );
+    $possibleAcademicYearFromFull = date( 'Y' );
+
     $settings->add( 
         new availability_condition_week_textarea(
             'availability_condition_week', 
             new lang_string( 'config_label', 'availability_week' ), 
             new lang_string( 'textarea_description', 'availability_week' ),
-            null
+<<<__DefaultJSON__
+[{"label":"Start of $possibleAcademicYear","academic_year":"none","date":"$possibleAcademicYearFromFull-10-01","show":1}]
+__DefaultJSON__
         )
     );
 }
