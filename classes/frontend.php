@@ -84,7 +84,7 @@ class frontend extends \core_availability\frontend {
         $availabilityConditionWeekConfig = new config( $course );
         $availabilityWeekConditionConfigObjectMap = $availabilityConditionWeekConfig->getOptions();
 
-        $visibleAvailabilityWeekConditionConfigObjectMap = new \stdClass();
+        $visibleAvailabilityWeekConditionConfigArray = array();
 
         $html = '<span class="availability-group">';
             $html .= \html_writer::start_tag('label');
@@ -94,7 +94,9 @@ class frontend extends \core_availability\frontend {
                     $attributes = ['value' => $availabilityWeekConditionConfigObject->label];
                     
                     if( $availabilityWeekConditionConfigObject->show || $this->findStoredAvailabilityWeekConditionByLabel($cm, $availabilityWeekConditionConfigObject->label ) ){
-                        $visibleAvailabilityWeekConditionConfigObjectMap->$key = $availabilityWeekConditionConfigObject;
+                        
+
+                        $visibleAvailabilityWeekConditionConfigArray[$key] = $availabilityWeekConditionConfigObject;
                         $html .= \html_writer::tag('option', $availabilityWeekConditionConfigObject->label, $attributes);
                     }
                 }
@@ -104,10 +106,15 @@ class frontend extends \core_availability\frontend {
             $html .= ' ';
        
         $html = rtrim($html) . '</span>';
+        
+        $firstLabel = !empty($visibleAvailabilityWeekConditionConfigArray) ? current($visibleAvailabilityWeekConditionConfigArray)->label : null;
 
+        // Convert the array back to an object
+        $visibleAvailabilityWeekConditionConfigObjectMap = (object) $visibleAvailabilityWeekConditionConfigArray;
+        
         return array( 
             $html,
-            current( $visibleAvailabilityWeekConditionConfigObjectMap )->label ? : null //set default label to that of the first config option, as that'll appear in drop-down list first
+            $firstLabel // current( $visibleAvailabilityWeekConditionConfigObjectMap )->label ? : null //set default label to that of the first config option, as that'll appear in drop-down list first
         ); 
     }
 }
